@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://unpkg.com/graphiql/graphiql.min.css" rel="stylesheet"/>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css'>
+    <style>
+      input[type=text] {margin:0 !important}
+    </style>
+</head>
+<body style="margin: 0;">
+<script crossorigin src="https://unpkg.com/react/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/graphiql/graphiql.min.js"></script>
+<div class='container mt-3'>
+    <input id='endpoint' placeholder='endpoint:' type='text' class='form-control' 
+           onChange=''>
+    <input id='appkey' placeholder='appkey:' type='text' class='form-control' 
+           onChange=''>
+</div>
+<div id="graphiql" style="height: 100vh;"></div>
+<script>
+  const gql = {
+    query: `{
+      __schema {
+        types {
+          name
+        }
+      }
+    }`
+  };
+  function graphQLFetcher(graphQLParams) {
+    const endpoint = document.getElementById('endpoint').value;
+    const apiToken = document.getElementById('appkey').value;
+    const headers = {
+      "content-type": "application/json",
+      "x-api-key": apiToken,
+      //'authorization': `Bearer ${jwtToken}`,
+    }; //localStorage.setItem('graphiql:apiToken', apiToken);
+    return fetch(endpoint,
+      {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(//gql
+                             graphQLParams
+        ),
+        credentials: 'omit',
+      },
+    ).then((data)=>{
+      return data.json().catch(function () {
+        return data.text();
+      });
+    });
+  }
+  ReactDOM.render(
+    React.createElement(GraphiQL, {
+      fetcher: //GraphiQL.createFetcher({ url: endpoint }),
+               graphQLFetcher,
+      headerEditorEnabled: true,
+      defaultEditorToolsVisibility: true,
+    }),
+    document.getElementById('graphiql'),
+  );
+</script>
+</body>
+</html>
