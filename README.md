@@ -1,5 +1,5 @@
 <h1 align="center">
-  test for grafbase-graphQL
+  connection tester for your graphQL server
   <img src="" alt=""> 
 </h1>
 
