@@ -1,0 +1,7 @@
+type Episode @model {
+  id: ID!
+  title: String!
+  description: String!
+  cover: String!
+  episodeNumber: Int!
+}
